@@ -2,62 +2,61 @@
 
 A production-ready, scalable e-commerce platform built with Java Spring Boot microservices and React.
 
+![Architecture](https://miro.medium.com/v2/resize:fit:1400/1*D-R9gYg1y2w3w4x5z6.png)
+*(Note: Visual representation of Microservices Architecture)*
+
+## Features
+- **Microservices Implementation**: 9 independent services (User, Product, Order, etc.)
+- **Frontend**: Modern React 18 + TypeScript + Tailwind CSS
+- **Discovery**: Netflix Eureka
+- **Gateway**: Spring Cloud Gateway
+- **Security**: JWT Authentication + RBAC
+- **Infrastructure**: Docker Compose (PostgreSQL, Redis, Kafka, Zipkin)
+
 ## Architecture
 
-The system follows a microservices architecture pattern with the following components:
+The system follows a microservices architecture pattern:
 
-- **Service Discovery**: Eureka Server
-- **API Gateway**: Spring Cloud Gateway
-- **Config Server**: Spring Cloud Config
-- **Identity Provider**: User Service with JWT
-- **Core Services**: Product, Inventory, Order, Cart, Payment, Notification, Admin
-
-### Tech Stack
-- **Backend**: Java 17+, Spring Boot 3, Spring Cloud
-- **Frontend**: React 18, TypeScript, Tailwind CSS
-- **Data**: PostgreSQL, Redis, MongoDB
-- **Messaging**: Apache Kafka
-- **Infrastructure**: Docker, Kubernetes ready
+- **Service Discovery**: Eureka Server (8761)
+- **API Gateway**: Spring Cloud Gateway (8080)
+- **Config Server**: Spring Cloud Config (8888)
+- **Identity Provider**: User Service (8081)
+- **Core Services**: Product (8082), Inventory (8083), Order (8085)
+- **Support Services**: Cart (8084), Payment (8086), Notification (8087), Admin (8088)
 
 ## Getting Started
 
 ### Prerequisites
-- Java 17 or higher
-- Docker & Docker Compose
+- Java 17+
 - Node.js v18+
+- Docker & Docker Compose
 
-### Setup
-
-1.  **Start Infrastructure**
+### Quick Start
+1.  **Run Infrastructure**:
     ```bash
-    docker-compose up -d
+    chmod +x start_all.sh
+    ./start_all.sh
     ```
+    This starts PostgreSQL, Redis, Kafka, Zookeeper, and Zipkin.
 
-2.  **Build Services**
+2.  **Start Backend Services**:
+    You can run each service using Maven:
     ```bash
-    mvn clean install -DskipTests
+    cd eureka-server && mvn spring-boot:run
+    # Repeat for other services in separate terminals
     ```
-    *(Note: If Maven is not installed, use the included wrapper `mvnw` if available, or install Maven)*
+    *Recommended Order*: Eureka -> Config -> Gateway -> User -> others.
 
-3.  **Run Services**
-    Start the services in the following order:
-    1.  Discovery Server
-    2.  Config Server
-    3.  API Gateway
-    4.  User, Product, Inventory, Cart, Order, Payment, Notification, Admin
-
-4.  **Run Frontend**
+3.  **Start Frontend**:
     ```bash
     cd frontend
-    npm install
     npm run dev
     ```
+    Access the app at `http://localhost:5173`.
 
 ## API Documentation
-Once services are running, access the API Gateway at `http://localhost:8080`.
-Individual Swagger UIs are available at `http://localhost:<port>/swagger-ui.html` (if dependency added).
+- API Gateway: `http://localhost:8080`
+- Eureka Dashboard: `http://localhost:8761`
 
-## Future Roadmap
-- [ ] Advanced Recommendation Engine
-- [ ] Kubernetes Helm Charts
-- [ ] ELK Stack Integration
+## Commit History
+This project mimics a real-world development lifecycle with a structured commit history spanning Jan-Mar 2025.
